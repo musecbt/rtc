@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name='keywords' content='WebRTC, HTML5, JavaScript' />
+<meta name='description' content='WebRTC Reference App' />
+<meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1'>
+
+<base target='_blank'>
+
+<title>WebRTC client</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+
+<!-- load font-awesome from the CDN -->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<!-- <link rel='stylesheet' href='css/main.css' /> -->
+<style>
+
+body {
+  background-color:#002525;
+
+}
+
+#container {
+  
+  min-height: 100%;
+  min-width: 735px;
+  // max-width: 1366px;
+
+}
+
+#header {
+  // background-color:#58C3CD;
+  // background-color: #999999;
+  height:85px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+  width:180px;
+  // float: left;
+//  display: inline;
+  display: block;
+}
+
+#videoWindow {
+  min-width: 640px;
+  width: 80%;
+  //width: 700px;
+  padding-top: 5px;
+  //padding-left: 150px;
+  //padding-right: 90px;
+  margin: 0 auto;
+ 
+}
+
+#notice {
+  font-size: 16px;
+  width: 700px;
+  height: 40px;
+  margin: 0 auto;
+  margin-bottom:5px;
+}
+
+
+#rejoinButton {
+  margin:0 auto;
+  display: none;
+  padding: 0;
+
+}
+
+#videos {
+  //width: 100%;
+  width: 700px;
+  //min-width: 375px;
+  //height: 100%;
+  //height: 525px;
+  border:0;
+  padding:0;
+  margin: 0 auto;
+  display: block;
+}
+
+.videoFrame {
+  position: relative;
+  margin-top: 0;
+  //border-color: #E6E6E6;
+  border-style: solid;
+  border-width: 1px;
+  display: inline;
+}
+
+#localVideo {
+
+  background-color: #002E2E;
+  //width: 150px;
+  width: 20%;
+ //height: 113px;
+  height: 10%
+  // margin: 0 auto;
+  position: relative;
+  margin: -150px -10px 0 0;
+  //left: 10px;
+  // bottom: 130px; 
+  // overflow: hidden;
+}
+
+#remoteVideo {
+
+  //background-color: #CCEBEB;
+  background-color: #002525;
+  min-width: 640px;
+  //width: 727px;
+  width: 700px;
+  width: 100%;
+  //height: 525px;
+  margin: 0 auto;
+  display: inline;
+  //overflow: hidden;
+
+}
+
+#controls {
+  width: 100%;
+  height: 50px;
+  // background-color: #227279;
+  padding: 0;
+  margin-top: 5px;
+}
+
+#buttonGroup {
+  //width:60%;
+  width:320px;
+  height:60px;
+  margin: 0 auto;
+  padding:0;
+
+}
+
+#buttonGroup .buttonWrapper {
+  width:100px;
+  vertical-align: middle;
+  display: block-inline;
+}
+
+.controlButton {
+  text-align: center;
+  // color: #2E4444;
+  color: #FFFFFF;
+  vertical-align: middle;
+}
+
+.fa-rotate-135 {
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+}
+
+a:hover {
+
+  cursor: pointer;
+
+}
+
+.fa-3x:hover {
+
+  color: #227279;
+
+}
+
+.fa-5x:hover {
+
+  color: #227279;
+
+}
+
+#system-notice {
+  float: right;
+  font-size: 20px;
+  color: #FFFFFF;
+  padding-right: 10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id='container'>
+  <div id='system-notice'>
+    <span>NOTICE: Working on configuring SSL/TLS. Please let DHS Services know of any demos.</span>
+  </div>
+  <div id='header'>
+    <img src="header-logo.png" />
+  </div>
+
+  <div id="videoWindow">
+
+    <div id='notice'></div>
+
+    <div id='videos'>
+    
+      <video id='remoteVideo' class='videoFrame' autoplay></video>
+      <div id='remoteIcons' style=" position: absolute; z-index: 10; margin: -500px 20px; color:#931616;"><span id="remoteMuteSignal" style="display:none" class="fa fa-microphone-slash fa-2x"></span></div>
+      <div style="margin: -30px 0 0 0; padding-left:10px;">
+        <video id='localVideo' class='videoFrame' autoplay muted></video>
+      </div>
+    </div>
+
+    <div id='controls'>
+   <a class="btn btn-default" id='rejoinButton' title="Rejoin Call" onclick='rejoin();'><span class="fa fa-refresh fa-5x"></span></a>
+        <div id='buttonGroup'>
+          <div class="btn buttonWrapper">
+            <a id="toggleAudio" class="controlButton" title="Mute Microphone" onclick='toggleAudio();'><span class="fa fa-microphone-slash fa-3x"></span></a>
+          </div>
+          <div class="btn buttonWrapper">
+            <a id="toggleVideo" class="controlButton" title="Pause Video" onclick="toggleVideo();"><span class="fa fa-eye-slash fa-3x"></span></a>
+          </div>
+          <div class="btn buttonWrapper">
+            <a id="hangup" class="controlButton" title="Leave Call" onclick="hangup();"><span class="fa fa-phone fa-rotate-135 fa-3x text-danger"></span></a>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script src='/socket.io/socket.io.js'></script>
+<script src='js/lib/adapter.js'></script>
+<script src='js/main.js'></script>
+
+</body>
+</html>
