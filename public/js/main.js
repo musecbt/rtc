@@ -12,7 +12,7 @@ var turnReady;
 
 
 var pc_config = {'iceServers': [
-    {'url': 'turn:test@54.218.114.170:3478?transport=tcp','credential':'musecbt'},
+    {'url': 'turns:test@rtc.musecbt.com?transport=tcp','credential':'musecbt'},
     {'url': 'stun:stun.l.google.com:19302'}
 ]};
 
