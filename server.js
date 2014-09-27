@@ -1,9 +1,15 @@
 var static = require('node-static');
-var http = require('http');
-var file = new(static.Server)('',{cache : 'no-cache'});
-var app = http.createServer(function (req, res) {
+var https = require('https');
+var fs = require('fs');
+var options = {
+    key: fs.readFileSync('ssl/musecbt.key'),
+    cert: fs.readFileSync('ssl/musecbt.crt')
+}
+var file = new(static.Server)('./public',{cache : 'no-cache'});
+var app = https.createServer(options, function (req, res) {
   file.serve(req, res);
-}).listen(80);
+}).listen(443);
+
 
 /*
 roomCount(io.sockets.adapter.rooms[room]);

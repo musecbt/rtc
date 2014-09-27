@@ -11,17 +11,14 @@ var remoteStream;
 var turnReady;
 
 
+
+// ICE server configuration
+// 20140927 BJK Configure for SSL/TLS and DTLS services.
 var pc_config = {'iceServers': [
-    {'url': 'turn:test@54.218.114.170:3478?transport=tcp','credential':'musecbt'},
+    {'url': 'turns:test@rtc.musecbt.com?transport=tcp','credential':'musecbt'},
     {'url': 'stun:stun.l.google.com:19302'}
 ]};
 
-
-/*
-var pc_config = {'iceServers': [
-    {'url': 'turn:test@blairkennedy.dlinkddns.com','credential':'test'},
-    {'url': 'stun:stun.l.google.com:19302'}]};
-*/
 
 /*
 var pc_config = {'iceServers': [
