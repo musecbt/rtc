@@ -2,8 +2,8 @@ var static = require('node-static');
 var https = require('https');
 var fs = require('fs');
 var options = {
-    key: fs.readFileSync('ssl/server_key.pem'),
-    cert: fs.readFileSync('ssl/server_crt.pem')
+    key: fs.readFileSync('ssl/musecbt.key'),
+    cert: fs.readFileSync('ssl/musecbt.crt')
 }
 var file = new(static.Server)('./public',{cache : 'no-cache'});
 var app = https.createServer(options, function (req, res) {
